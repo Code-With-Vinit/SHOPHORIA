@@ -1,8 +1,53 @@
-import React from 'react'
+import React, { useState,useEffect } from 'react'
+import { BrowserRouter,Routes,Route } from 'react-router-dom'
+import Navbar from './component/Navbar'
+import Home from './pages/Home'
+import About from './pages/About'
+import Contacts from './pages/Contacts'
+import Products from './pages/Products'
+import Cart from './pages/Cart'
+import axios from 'axios'
 
 const App = () => {
+  
+  const [location,setLocation]=useState("");
+   const [openDropdown,setOpenDropdown]= useState(false);
+
+  const getLocation=async()=>{
+    navigator.geolocation.getCurrentPosition( async pos=>{
+      const{latitude,longitude}=pos.coords;
+      console.log(latitude,longitude);
+      const url=`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
+
+      try {
+        const location= await axios.get(url);
+        const exactLocation=location.data.address;
+        console.log(location);
+        setLocation(exactLocation);
+        setOpenDropdown(false);
+      } 
+      catch (error) {
+        console.log(error);
+      }
+    })
+
+  }
+
+  useEffect(()=>{
+    getLocation();
+  },[])
+
   return (
-    <div className='text-red-500 text-4xl text-center font-bold'>SHOPHORIA</div>
+    <BrowserRouter>
+    <Navbar location={location} getLocation={getLocation} openDropdown={openDropdown} setOpenDropdown={setOpenDropdown}/>
+      <Routes>
+          <Route path="/" element={<Home/>}></Route>
+          <Route path="/products" element={<Products/>}></Route>
+          <Route path="/contacts" element={<Contacts/>}></Route>
+          <Route path="/about" element={<About/>}></Route>
+          <Route path="/cart" element={<Cart/>}></Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
