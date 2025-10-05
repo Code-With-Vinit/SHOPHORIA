@@ -1,13 +1,14 @@
 import React from "react";
-import { useContext, useEffect } from "react";
-import { DataContext } from "../context/DataContext";
+import { useEffect } from "react";
+import { GetData } from "../context/DataContext";
+import Category from "./category";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 
 const Carousel = () => {
-  const { data, fetchAllProducts } = useContext(DataContext);
+  const { data, fetchAllProducts } = GetData();
   console.log(data);
 
   useEffect(() => {
@@ -21,8 +22,8 @@ const Carousel = () => {
             <div onClick={onClick} className={`arrow ${className}`} style={{zIndex:3}}>
                 <AiOutlineArrowLeft className="arrows" style={{...style,display:"block",borderRadius:"50px",background:"#f53347",color:"white",
                 position:"absolute",padding:"2px",left:"50px"}}
-                onMouseOver="this.style.backgroundColor=#555"/>
-
+                />
+                {/* onMouseOver="this.style.backgroundColor='#555'" */}
             </div>
         )
   }
@@ -72,6 +73,7 @@ const Carousel = () => {
             })
         }
       </Slider>
+      <Category/>
     </div>
   );
 };
