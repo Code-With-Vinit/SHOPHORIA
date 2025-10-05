@@ -1,8 +1,11 @@
 import React from 'react'
+import Carousel from '../component/Carousel';
 
 const Home = () => {
   return (
-    <div className='text-red-600 font-bold'>Home</div>
+    <>
+      <Carousel/>
+    </>
   )
 }
 
